@@ -11,8 +11,16 @@ const app = express();
 const port = 3000;
 app.use(cors());
 
-app.use("/api-docs", swaggerUi.serve,swaggerUi.setup(swaggerSepc));
+// Swagger 문서 설정 (/api-docs 경로에서 열림)
+app.use("/api-docs", (req, res, next) => {
+  res.status(200);  // Cloudtype health check 대응
+  next();
+}, swaggerUi.serve, swaggerUi.setup(swaggerSepc));
 
+// 기본 루트 응답 (선택사항: "/"로 접속 시 메시지 출력)
+app.get("/", (req, res) => {
+  res.send("Re-Inje 서버가 실행 중입니다.");
+});
 
 const inje_iu = require("./routes/Inje_IU/inje_iu");
 app.use("/api/inje_iu",inje_iu);
@@ -25,7 +33,7 @@ app.use("/api/inje_iu",inje_iu_refresh)
 cron.schedule("0 0 9 * * *", () => {
   console.log("🕘 [CRON] 오전 9시: 크롤링 시작");
 
-  exec("python ../Crawling/Inje_IU/IU.py", (error, stdout, stderr) => {
+  exec("python ./Crawling/Inje_IU/IU.py", (error, stdout, stderr) => {
     if (error) {
       console.error("크롤링 중 오류:", error);
       return;
