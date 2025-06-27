@@ -11,8 +11,12 @@ const options = {
       description: "Inje 대학교 프로그램 크롤링 API 문서",
     },
     servers: [
+      //PC
+      // {
+      //   url: "http://localhost:3000", // 서버 주소
+      // },
       {
-        url: "http://localhost:3000", // 서버 주소
+        url : "https://port-0-re-inje-m7syarm12c5a1376.sel4.cloudtype.app", //배포 주소
       },
     ],
   },
